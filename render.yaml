@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mini-tracker-backend
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt && python manage.py migrate
+    startCommand: gunicorn mini_tracker_backend.wsgi
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: my-postgres-database
+          property: connectionString
+      - key: SECRET_KEY
+        value: "your-django-secret-key"
+      - key: DEBUG
+        value: "False"
